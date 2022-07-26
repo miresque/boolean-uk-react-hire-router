@@ -9,15 +9,11 @@ function PersonProfile(props) {
   const location = useLocation()
 
   useEffect(() => {
-    
     if(location.state) {
       const { person } = location.state
       setPerson(person)
     }
-    
   }, [person])
-
-
 
   if (!person) return <p>Loading...</p>
 

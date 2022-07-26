@@ -6,11 +6,27 @@ function HireForm(props) {
   const { person, hiredPeople, setHiredPeople } = props
   const navigate = useNavigate()
 
+  function personAlreadyHired() {
+    const hasHired = hiredPeople.some(p => p.login.username === person.login.username)
+    return hasHired
+  }
+
+  function hiredPersonByIndex() {
+    const index = hiredPeople.findIndex(p => p.login.username === person.login.username)
+    return index
+  }
+
   function handleSubmit(event) {
     event.preventDefault()
-    const hiredPerson = {...person, hired: true, wage: wage}
-    const newHiredPeople = [...hiredPeople, hiredPerson]
-    console.log(hiredPeople)
+    const hiredIndex = hiredPersonByIndex()
+    let newHiredPeople = [...hiredPeople]
+    if (!personAlreadyHired()) {
+      const hiredPerson = {...person, hired: true, wage: wage}
+      newHiredPeople = [...hiredPeople, hiredPerson]
+    } else {
+      const updatedHiredPerson = {...newHiredPeople[hiredIndex], wage: wage}
+      newHiredPeople.splice(hiredIndex, 1, updatedHiredPerson)
+    }
     setHiredPeople(newHiredPeople)
     navigate("/")
   }
